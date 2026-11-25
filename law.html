@@ -43,6 +43,7 @@
   .progress { flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 16px; }
   .progress .label { font-family: var(--mono); font-size: 14px; color: var(--mute); white-space: nowrap; letter-spacing: .12em; }
   .progress .label b { color: var(--ink); font-weight: 400; }
+  .progress .label i { font-style: normal; }
   .progress .bar { width: 180px; height: 4px; background: var(--hair); position: relative; border-radius: 2px; overflow: hidden; }
   .progress .bar span { position: absolute; left: 0; top: 0; height: 4px; background: var(--ink); width: 0; transition: width .2s ease; }
   .id-chip { font-family: var(--mono); font-size: 13px; color: var(--mute); letter-spacing: .1em; white-space: nowrap; margin-left: 6px; }
@@ -122,11 +123,12 @@
   .term { color: var(--ink); }
 
   /* ---------- 頁尾 ---------- */
-  .doc-foot { display: flex; justify-content: space-between; align-items: center; margin: 56px 0 0 .5em; padding-top: 18px;
+  .doc-foot { display: flex; justify-content: space-between; align-items: center; gap: 16px 24px; flex-wrap: wrap; margin: 56px 0 0 .5em; padding-top: 18px;
               border-top: 1.5px solid var(--rule); font-family: var(--mono); font-size: 12px; color: var(--mute); letter-spacing: .14em; }
   .btn { border: 1px solid var(--ctl); background: transparent; color: var(--ink); height: 40px; padding: 0 22px; line-height: 38px; border-radius: 999px;
-         cursor: pointer; font-size: 15px; letter-spacing: .12em; font-family: var(--sans); transition: background .15s, color .15s; }
-  .btn:hover { background: var(--ink); border-color: var(--ink); color: #fff; }
+         cursor: pointer; font-size: 15px; letter-spacing: .12em; font-family: var(--sans); white-space: nowrap; flex: none; transition: background .15s, color .15s; }
+  @media (hover: hover) { .btn:hover { background: var(--ink); border-color: var(--ink); color: #fff; } }
+  .btn:active { background: var(--ink); border-color: var(--ink); color: #fff; }
   .tri-u { display: inline-block; width: 0; height: 0; margin-right: 12px; vertical-align: 2px;
            border-left: 4.5px solid transparent; border-right: 4.5px solid transparent; border-bottom: 7px solid currentColor; }
 
@@ -135,9 +137,12 @@
     nav.toc { display: none; }
     main { padding: 36px 22px 80px; }
     header.top { gap: 16px; padding: 0 16px; }
-    header.top h1, .progress .bar { display: none; }
+    header.top h1, .progress .bar, .progress .label .lx { display: none; }
+    .progress .label { font-size: 13px; letter-spacing: .06em; }
+    .brand .org { margin-left: 12px; padding-left: 12px; }
     .ph-no { font-size: 60px; } .ph { gap: 16px; } .ph h2 { font-size: 24px; }
     .stats { gap: 28px; } .stats b { font-size: 32px; }
+    .doc-foot { flex-direction: column; align-items: flex-start; margin-left: 0; padding-bottom: 72px; }
     .card { margin-left: 0; } .nlist { margin-left: 0; } .card p.para { grid-template-columns: 26px 1fr; }
   }
   @media print {
@@ -271,7 +276,7 @@ function onScroll() {
   const started = main.scrollTop > 40;
   const max = main.scrollHeight - main.clientHeight;
   document.getElementById('progBar').style.width = (max > 0 ? Math.round(main.scrollTop / max * 100) : 0) + '%';
-  document.getElementById('progLabel').innerHTML = started ? `第 <b>${pad2(cur + 1)}</b> / ${pad2(TOTAL)} 條` : `共 <b>${pad2(TOTAL)}</b> 條`;
+  document.getElementById('progLabel').innerHTML = started ? `<i class="lx">第 </i><b>${pad2(cur + 1)}</b> / ${pad2(TOTAL)}<i class="lx"> 條</i>` : `<i class="lx">共 </i><b>${pad2(TOTAL)}</b><i class="lx"> 條</i>`;
   const key = started ? cur : -1;
   if (key === lastArt) return;
   lastArt = key;
