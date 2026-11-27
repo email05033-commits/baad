@@ -434,6 +434,13 @@
     .progress .bar { min-width: 24px; }
     main { padding-left: 18px; padding-right: 18px; }
   }
+  @media (max-width: 600px) {
+    /* 手機：欄位標籤獨立一行，輸入欄在下一行，避免「出生日期」被拆成兩行 */
+    .field { gap: 8px; margin: 22px 0; }
+    .field label.lbl { flex-basis: 100%; min-width: 0; margin-bottom: -2px; }
+    .field input[type=text]:not([readonly]) { flex: 1; min-width: 0; }
+    .field input[data-bind="ch1.y"] { width: 4em !important; }
+  }
 </style>
 </head>
 <body>
