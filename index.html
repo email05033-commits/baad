@@ -363,7 +363,7 @@
   .d-id small.st-fail { color: var(--err); font-weight: 600; }
   .c-actions { grid-column: 2; grid-row: 2; max-width: 560px; display: flex; justify-content: flex-end; margin-top: 48px; }
   @media (max-width: 1000px) {
-    .cover2 { grid-template-columns: 1fr; grid-template-rows: auto; row-gap: 48px; }
+    .cover2 { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; row-gap: 48px; }
     .c-brand, .c-main, .c-actions { grid-column: 1; grid-row: auto; }
     .c-brand { justify-self: start; max-width: 380px; }
     .c-org b, .c-org .sep { font-size: 15px; }
@@ -412,12 +412,27 @@
 
   @media (max-width: 880px) {
     .ph-no { font-size: 60px; } .ph { gap: 16px; } .ph h2, .page .ph h2 { font-size: 24px; }
-    .body { grid-template-columns: 1fr; }
+    .body { grid-template-columns: minmax(0, 1fr); }
     nav.toc { display: none; }
     main { padding: 36px 22px 80px; }
     header.top { gap: 16px; padding: 0 16px; }
     header.top h1, .top .id-chip { display: none; }
     .sheet { padding: 28px 20px 36px; }
+    /* 手機：改成整頁捲動，避免 100vh 內層捲動框在手機瀏覽器下方留白、內容沒畫出來 */
+    html, body { height: auto; }
+    .app { height: auto; min-height: 100vh; min-height: 100dvh; }
+    header.top { position: sticky; top: 0; z-index: 5; }
+    main { overflow: visible; }
+    .progress { min-width: 0; gap: 12px; }
+    .progress .bar { width: auto; flex: 1 1 60px; min-width: 40px; max-width: 180px; }
+  }
+  @media (max-width: 430px) {
+    header.top { gap: 10px; padding: 0 14px; }
+    header.top .brand .org { margin-left: 10px; padding-left: 10px; }
+    .progress { gap: 10px; }
+    .progress .label { font-size: 12px; letter-spacing: .06em; }
+    .progress .bar { min-width: 24px; }
+    main { padding-left: 18px; padding-right: 18px; }
   }
 </style>
 </head>
@@ -683,6 +698,7 @@ function validate(s) {
    ========================================================================= */
 let errors = [];
 
+function scrollTop0() { document.getElementById('main').scrollTop = 0; window.scrollTo(0, 0); }
 function goTo(s) {
   // 離開一個已確認但被改壞的畫面 → 取消其確認狀態
   const cur = state.screen;
@@ -694,7 +710,7 @@ function goTo(s) {
       state.confirmed = state.confirmed.filter(x => x !== cur);
       errors = errs;
       saveDraft(); render();
-      document.getElementById('main').scrollTop = 0;
+      scrollTop0();
       return;
     }
   }
@@ -706,13 +722,13 @@ function goTo(s) {
   errors = [];
   saveDraft();
   render();
-  document.getElementById('main').scrollTop = 0;
+  scrollTop0();
 }
 
 function confirmScreen() {
   const s = state.screen;
   errors = validate(s);
-  if (errors.length) { renderMain(); document.getElementById('main').scrollTop = 0; return; }
+  if (errors.length) { renderMain(); scrollTop0(); return; }
   if (!isConfirmed(s)) state.confirmed.push(s);
   if (s === 'ch5') return submitForm();
   let next;
@@ -1232,14 +1248,14 @@ document.addEventListener('click', e => {
     }
     case 'restart': {   // 完成頁：資料已送出保存，直接回首頁、開始新的一份
       state = freshState(); errors = []; lastRecord = null; sheetStatus = '';
-      render(); document.getElementById('main').scrollTop = 0;
+      render(); scrollTop0();
       return;
     }
     case 'homeCancel': document.getElementById('homeDlg').hidden = true; return;
     case 'homeConfirm': {
       document.getElementById('homeDlg').hidden = true;
       clearDraft(); state = freshState(); errors = []; lastRecord = null;
-      render(); document.getElementById('main').scrollTop = 0;
+      render(); scrollTop0();
       return;
     }
     case 'prev': return prevScreen();
