@@ -440,6 +440,13 @@
     .field label.lbl { flex-basis: 100%; min-width: 0; margin-bottom: -2px; }
     .field input[type=text]:not([readonly]) { flex: 1; min-width: 0; }
     .field input[data-bind="ch1.y"] { width: 4em !important; }
+    /* 手機：確認送出頁 */
+    .card.review, .lead + .card.review, .muted + .card.review, .page > .card.review:first-of-type { padding: 18px 18px 20px; }
+    .review dl { grid-template-columns: 7.5em minmax(0, 1fr); }
+    .review dt { padding-right: 8px; }
+    .review .art-head { flex-wrap: wrap; row-gap: 2px; }
+    .review .art-t .n { display: inline-block; width: 3.6em; }
+    .review .art-head .st { order: 3; flex-basis: 100%; font-size: 13px; padding-left: calc(3.6em + 12px); }
   }
 </style>
 </head>
