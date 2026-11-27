@@ -259,7 +259,8 @@
   .opinion-box textarea { transition: opacity .15s; }
   .art-card:has(input[value=default]:checked) .opinion-box textarea { opacity: .45; }
   .art-note { margin: -8px 0 18px; }
-  .art-note.free { margin: -4px 0 12px; }   /* 預設條款下方的 ※ 注釋（只在填寫頁顯示） */
+  .art-note.free { margin: 14px 0 12px; }   /* 第十條：標題下方的 ※ 注釋，與標題拉開距離（只在填寫頁顯示） */
+  .art-note { line-height: 1.75; text-wrap: pretty; }   /* 注釋換行時避免最後一行只剩一兩個字 */
   .dr-note { margin: -4px 0 12px !important; padding-left: 28px; }   /* 04 除籍下方 ※ 注釋：對齊選項文字（只在填寫頁顯示） */
   .default-box { border-left: 1.5px solid var(--rule); padding: 2px 0 2px 18px; margin: 14px 0 22px; color: var(--ink2); }
   .default-box b { display: block; font-size: 13px; font-weight: 500; letter-spacing: .14em; color: var(--mute); margin-bottom: 4px; }
@@ -316,6 +317,7 @@
     .dlg.adv { padding: 26px 22px 22px; }
     .dlg.adv .adv-x { top: 18px; right: 18px; }
     .dlg.adv h2 { font-size: 17px; margin-bottom: 12px; }
+    .art-note.free { margin-top: 16px; }
   }
   .lead { color: var(--ink2); margin: 0 0 32px; }
   .lead b { color: var(--ink); }
