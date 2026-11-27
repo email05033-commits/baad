@@ -127,6 +127,8 @@
   .btn { border: 1px solid var(--ctl); background: transparent; color: var(--ink); height: 40px; padding: 0 22px; line-height: 38px; border-radius: 999px;
          cursor: pointer; font-size: 15px; letter-spacing: .12em; font-family: var(--sans); transition: background .15s, color .15s; }
   .btn:hover { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .doc-foot .btn { flex: none; white-space: nowrap; }   /* 按鈕不換行、不被壓縮 */
+  .doc-foot > span { min-width: 0; }
   .tri-u { display: inline-block; width: 0; height: 0; margin-right: 12px; vertical-align: 2px;
            border-left: 4.5px solid transparent; border-right: 4.5px solid transparent; border-bottom: 7px solid currentColor; }
 
@@ -139,6 +141,7 @@
     .ph-no { font-size: 60px; } .ph { gap: 16px; } .ph h2 { font-size: 24px; }
     .stats { gap: 28px; } .stats b { font-size: 32px; }
     .card { margin-left: 0; } .nlist { margin-left: 0; } .card p.para { grid-template-columns: 26px 1fr; }
+    .doc-foot { flex-direction: column; align-items: flex-start; gap: 16px; margin-left: 0; letter-spacing: .08em; }   /* 手機：文字一行、按鈕放下一行 */
   }
   @media print {
     .app { display: block; height: auto; } header.top, nav.toc, .doc-foot .btn { display: none; }
