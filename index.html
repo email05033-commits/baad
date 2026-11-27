@@ -1384,31 +1384,36 @@ const ADVICE = {
            '化身可以與使用人吵架嗎？',
            '化身可以代替您與他人和解嗎？'],
        ref: ['第十五條', '第十六條', '第十七條'] },
-  5: { q: ['依民法順序，哪些您在意的人無法與化身互動？例如伴侶、好友、兄弟姊妹。',
-           '有沒有人是您不希望他接觸化身的？',
-           '未成年的孩子或孫子女，可以和化身互動嗎？需要什麼條件？'],
-       ref: ['第九條', '第十二條', '第二十條'] },
-  6: { q: ['有沒有資料是您希望在離世後刪除的？例如私人訊息、日記、搜尋紀錄。',
-           '有沒有事情，是您不希望化身向家人提起的？',
-           '化身對不同的人，可以透露的程度應該一樣嗎？'],
-       ref: ['第三條', '第十六條'] },
-  7: { q: ['您願意被複製，或讓資料用來訓練其他 AI 嗎？',
-           '如果願意，限定哪些用途？例如教育、學術、文化。',
-           '家裡的化身除籍後，其他地方的複本是否也應該一起除籍？'],
-       ref: ['第十三條'] },
-  8: { q: ['您希望依自己的信仰被對待，還是尊重使用人的信仰？',
-           '有沒有您不願意化身參與的儀式？',
-           '家人祈求「保佑」或向化身問事時，您希望它怎麼回應？'],
-       ref: ['第十六條'] },
-  9: { q: ['如果只能留下一部分，您最想留下什麼？例如聲音、記憶、個性、專業知識。',
-           '維護費用應該由誰負擔？',
-           '家人無力負擔時，您寧可被縮減、封存，還是直接除籍？'],
-       ref: ['第二十四條', '第二十五條', '第二十六條'] },
-  10: { q: ['前面沒有提到，但您在意的事。',
-            '有沒有想留給特定人的話，或希望化身在某個時刻做的事？',
-            '您希望化身在什麼情況下被除籍？想要怎麼告別？',
-            '沒有寫到的事會由監護人決定。有沒有您不想交給監護人決定的事？'],
-        ref: ['第十一條', '第二十七條'] },
+  5: { q: ['誰讓您感受到被需要或是被愛？',
+           '化身能以您的名義和陌生人互動嗎？',
+           '您未來的家人可以與化身互動嗎？',
+           '誰可能會濫用您的化身？'],
+       ref: ['第八條', '第十三條', '第二十條', '第二十二條'] },
+  6: { q: ['有沒有事情，您不希望化身知道？',
+           '有沒有事情，您覺得化身應該知道，但不應該說出來？',
+           '有沒有事情，您想保留一段時間後再說？',
+           '別人跟化身說過的事，化身可以告訴其他人嗎？'],
+       ref: ['第五條', '第十二條'] },
+  7: { q: ['為了公益用途，您願意提供哪些資料呢？',
+           '您的化身除籍時，被複製的化身或資料還能保留嗎？',
+           '用您的資料訓練出來的 AI，可以以您自居嗎？',
+           '為了公益，政府可以使用您的化身營利嗎？'],
+       ref: ['第八條', '第十三條', '第十八條', '第二十三條'] },
+  8: { q: ['化身需要維持您生前的信仰嗎？',
+           '化身可以回應使用人的祈禱嗎？',
+           '化身可以參加所有儀式嗎？',
+           '一百年後，您的化身可能會被當成什麼？'],
+       ref: ['第十六條', '第十七條'] },
+  9: { q: ['考量留存目的或使用人，化身不能失去什麼？',
+           '不停縮減的化身，還能代表您、以您自居嗎？',
+           '如果有一天，您的化身養不起自己怎麼辦？',
+           '大家被迫失去您的化身時，該如何面對？'],
+       ref: ['第二十三條', '第二十五條', '第二十六條', '第二十七條'] },
+  10: { q: ['有沒有前面沒有提到，但您很在意的事情？',
+            '您希望化身如何離場？大家該如何告別它？',
+            '有沒有事情，您不想交給監護人決定？',
+            '什麼情況，應該停用您的化身？'],
+        ref: ['第十一條', '第二十二條', '第二十七條'] },
 };
 /* 跑馬燈：「本局近期受理」的其他立書人意見（虛構），用來打開想像；日常與荒謬混搭，只用短詞，避免被照抄成句子 */
 const PROMPTS = {   // a：荒謬｜d：日常。跑馬燈依「荒謬－日常－荒謬…」輪替
@@ -1439,7 +1444,7 @@ function marqueeHTML(no) {
   const A = mix(P.a), D = mix(P.d), list = [];
   for (let i = 0; i < Math.max(A.length, D.length); i++) { if (A[i]) list.push(A[i]); if (D[i]) list.push(D[i]); }   // 荒謬－日常輪替
   const row = list.map(x => `<span class="mq-i">${esc(x)}</span>`).join('');
-  const dur = Math.max(24, list.join('').length * 1.1);   // 依字數調整速度
+  const dur = Math.max(20, list.join('').length * 0.95);   // 依字數調整速度（11-27 加快約 15%）
   return `<div class="adv-mq"><span class="adv-mq-t">本局近期受理之意見（摘錄）</span>
     <div class="mq" aria-label="${esc(list.join('、'))}"><div class="mq-track" style="animation-duration:${dur}s" aria-hidden="true">${row}${row}</div></div></div>`;
 }
@@ -1453,7 +1458,9 @@ function adviceHTML(no) {
     <div class="adv-ref"><span>相關條文</span>${d.ref.map(r => `<button class="linklike" data-act="lawAt" data-art="${r}">條例${r}</button>`).join('')}</div>
     <div class="dlg-btns"><button class="btn primary" data-act="advWrite" data-no="${no}">${a.def ? '寫下另有意見' : '開始填寫'}</button></div>`;
 }
-function openAdvice(no) { const d = document.getElementById('advDlg'); d.querySelector('.dlg').innerHTML = adviceHTML(no); d.hidden = false; d.querySelector('.adv-x').focus(); }
+const MQ_SPEED = 28;   // 跑馬燈速度（px／秒）：十條速度一致，要調快調慢改這裡
+function openAdvice(no) { const d = document.getElementById('advDlg'); d.querySelector('.dlg').innerHTML = adviceHTML(no); d.hidden = false; d.querySelector('.adv-x').focus();
+  const t = d.querySelector('.mq-track'); if (t) t.style.animationDuration = (t.scrollWidth / 2 / MQ_SPEED) + 's'; }
 function closeAdvice() { document.getElementById('advDlg').hidden = true; }
 function openLawAt(art) {
   openLaw();
