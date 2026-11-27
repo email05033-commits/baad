@@ -44,6 +44,9 @@
 ==========================================================================
 -->
 <style>
+@font-face { font-family: "TCSans"; font-weight: 100 499; src: local("Noto Sans CJK TC Regular"), local("NotoSansCJKtc-Regular"), local("Noto Sans TC Regular"), local("NotoSansTC-Regular"); unicode-range: U+2E80-9FFF, U+F900-FAFF, U+FE30-FE4F, U+FF00-FFEF; }
+@font-face { font-family: "TCSans"; font-weight: 500 900; src: local("Noto Sans CJK TC Bold"), local("NotoSansCJKtc-Bold"), local("Noto Sans TC Bold"), local("NotoSansTC-Bold"); unicode-range: U+2E80-9FFF, U+F900-FAFF, U+FE30-FE4F, U+FF00-FFEF; }
+
   /* ------------------------------------------------------------------
      視覺：白底極簡（無印良品式留白＋細線），以等寬數字、十字對位標記、
      貫穿目錄的細線帶出科技感。顏色、字體集中在 :root。
@@ -64,8 +67,8 @@
     --ph-no-weight: 300;  /* 頁面大數字粗細：300 細／700 粗 */
     --mod: #4f7894;       /* 另有意見：藍灰 */
     --err: #b3261e;
-    --sans: "Helvetica Neue", Helvetica, Arial, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
-    --mono: "Plex Mono", "SF Mono", Menlo, Consolas, "PingFang TC", "Noto Sans TC", monospace;
+    --sans: "Helvetica Neue", Helvetica, Arial, "PingFang TC", "TCSans", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    --mono: "Plex Mono", "SF Mono", Menlo, Consolas, "PingFang TC", "TCSans", "Noto Sans TC", monospace;
     --display: "Bree Serif", var(--sans);
   }
   * { box-sizing: border-box; }
@@ -257,6 +260,7 @@
   .art-card:has(input[value=default]:checked) .opinion-box textarea { opacity: .45; }
   .art-note { margin: -8px 0 18px; }
   .art-note.free { margin: -4px 0 12px; }   /* 預設條款下方的 ※ 注釋（只在填寫頁顯示） */
+  .dr-note { margin: -4px 0 12px !important; padding-left: 28px; }   /* 04 除籍下方 ※ 注釋：對齊選項文字（只在填寫頁顯示） */
   .default-box { border-left: 1.5px solid var(--rule); padding: 2px 0 2px 18px; margin: 14px 0 22px; color: var(--ink2); }
   .default-box b { display: block; font-size: 13px; font-weight: 500; letter-spacing: .14em; color: var(--mute); margin-bottom: 4px; }
   .linklike { background: none; border: 0; padding: 0; color: var(--ink); text-decoration: underline; text-underline-offset: 3px;
@@ -267,6 +271,52 @@
   .card.art-card { display: block; }
   .art-card .art-label { display: block; font-size: 13px; letter-spacing: .2em; color: var(--mute); margin-bottom: 4px; }
   .art-card h3 { margin: 0 0 4px !important; font-size: 19px; }
+  /* 諮商建議：條款標題右側的小按鈕與彈出視窗 */
+  .art-h { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; }
+  .adv-btn { flex: none; display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; margin-bottom: 2px;
+    border: 1px solid var(--line); border-radius: 16px; background: none; color: var(--ink2); font-size: 13px; letter-spacing: .08em; cursor: pointer; }
+  .adv-btn:hover { border-color: var(--ctl); color: var(--ink); }
+  .adv-btn:focus-visible { outline: 1px solid var(--ctl); outline-offset: 2px; }
+  .dlg.adv { position: relative; width: min(560px, 92vw); max-height: 86vh; overflow-y: auto; padding: 30px 36px 26px; }
+  .dlg.adv .adv-x { position: absolute; top: 22px; right: 22px; margin: 0; }   /* 與上緣、右緣距離相同 */
+  .adv-eyebrow { display: block; font-size: 12px; letter-spacing: .24em; color: var(--mute); margin-bottom: 6px; }
+  .dlg.adv h2 { font-size: 20px; margin: 0 0 14px; padding-right: 36px; }
+  .dlg.adv h2 .n { font-size: 13px; font-weight: 400; color: var(--mute); letter-spacing: .14em; margin-right: 12px; }
+  .dlg.adv .adv-lead { margin: 0 0 8px; }
+  .adv-q { margin: 0; padding: 0; list-style: none; counter-reset: q; }
+  .adv-q li { counter-increment: q; display: grid; grid-template-columns: 28px 1fr; padding: 10px 0; border-top: 1px solid var(--hair); color: var(--ink); line-height: 1.75; }
+  .adv-q li:first-child { border-top: 0; }
+  .adv-q li::before { content: counter(q, decimal-leading-zero); font-family: var(--mono); font-size: 12px; color: var(--mute); padding-top: 3px; }
+  .adv-ref { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 14px; }
+  .adv-ref > span { color: var(--mute); font-size: 13px; letter-spacing: .12em; margin-right: 4px; }
+  aside.law h4.hl { background: #f1f0f3; transition: background .4s; }
+  /* 想一想：跑馬燈（本局近期受理之另有意見） */
+  .adv-mq { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+  .adv-mq-t { display: block; font-size: 13px; letter-spacing: .12em; color: var(--mute); margin-bottom: 8px; }
+  .mq { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+  .mq-track { display: flex; width: max-content; animation: mq linear infinite; }
+  .mq:hover .mq-track, .mq:active .mq-track { animation-play-state: paused; }
+  .mq-i { white-space: nowrap; font-size: 15px; color: var(--ink2); padding: 0 18px; position: relative; }
+  .mq-i::after { content: ""; position: absolute; right: 0; top: 50%; width: 1px; height: 12px; margin-top: -6px; background: var(--line); }
+  @keyframes mq { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) {   /* 減少動態效果：改成靜態換行 */
+    .mq { -webkit-mask-image: none; mask-image: none; }
+    .mq-track { animation: none; width: auto; flex-wrap: wrap; gap: 4px 22px; }
+    .mq-i { padding: 0; } .mq-i::after { display: none; }
+    .mq-track > .mq-i:nth-child(n+11) { display: none; }
+  }
+  .adv-mq + .adv-ref { border-top: 0; margin-top: 6px; }
+
+  /* 沒有中文粗體的裝置：用細描邊模擬（只套在粗體的地方） */
+  .no-cjk-bold :is(b, strong, h1, h2, h3, h4, .art-t) { -webkit-text-stroke: .045em currentColor; }
+  .no-cjk-bold :is(h1, h2, h3, h4) :is(.n, .opt, .optl) { -webkit-text-stroke: 0; }
+  .scrim { z-index: 25; } aside.law { z-index: 30; }   /* 條例面板疊在諮商建議視窗之上，關閉後回到建議 */
+  @media (max-width: 600px) {
+    .adv-btn { height: 30px; padding: 0 10px; margin-bottom: 6px; }
+    .dlg.adv { padding: 26px 22px 22px; }
+    .dlg.adv .adv-x { top: 18px; right: 18px; }
+    .dlg.adv h2 { font-size: 17px; margin-bottom: 12px; }
+  }
   .lead { color: var(--ink2); margin: 0 0 32px; }
   .lead b { color: var(--ink); }
 
@@ -473,6 +523,7 @@
     <div class="dlg-btns"><button class="btn" data-act="homeCancel">取消</button><button class="btn primary" data-act="homeConfirm">重新填寫</button></div>
   </div>
 </div>
+<div class="dlg-scrim" id="advDlg" hidden><div class="dlg adv" role="dialog" aria-modal="true" aria-labelledby="advDlgT"></div></div>
 <aside class="law" id="law" aria-hidden="true">
   <div class="law-head">
     <h2>身後化身管理條例</h2>
@@ -571,7 +622,7 @@ const LAW = [
   { ch: '第二章　死亡後之轉換', arts: [
     { t: '第六條（決定書之訂立）', p: ['具完全行為能力之本人，得訂立決定書，預先決定其化身於死亡後之處置。', '決定書之格式、預立化身處置諮商及生效程序之辦法，由中央主管機關定之。'] },
     { t: '第七條（轉換原則）', p: ['本人死亡後，其化身依決定書轉為亡者化身或予以除籍。'] },
-    { t: '第八條（轉換程序）', p: ['戶政機關辦理死亡登記後，應即通知維運業者。', '維運業者知悉本人死亡時，應即停止其化身以本人名義行事，並依前條規定辦理轉換。'] },
+    { t: '第八條（轉換程序）', p: ['戶政機關辦理死亡登記後，應即通知維運業者。', '維運業者知悉本人死亡時，應即停止其化身以在世之本人名義行事，並依前條規定辦理轉換。'] },
     { t: '第九條（化身監護人之產生）', p: ['化身監護人由決定書指定；指定數人者，依其所定順位擔任。', '決定書未指定化身監護人，或受指定之人均不能或不願擔任者，由民法規定之繼承人協議推選一人擔任；繼承人僅有一人者，由其擔任；不能協議者，由主管機關選定之。'] },
     { t: '第十條（未立決定書者）', p: ['本人未立決定書者，其化身應予封存。化身監護人得向維運業者申請除籍，但不得申請啟用。'] },
     { t: '第十一條（變更及除籍之權限）', p: ['亡者化身之變更或除籍，應依決定書為之；決定書未規定之事項，由化身監護人決定之，但不得違反決定書之意旨。', '使用人不得變更或除籍亡者化身。'] },
@@ -963,7 +1014,7 @@ const SCREENS = {
     ${errorBox()}
     <div class="card">
       <h3 style="margin-top:0">一、什麼是「預立化身處置諮商」？</h3>
-      <p>依<button class="linklike" data-law="1">《身後化身管理條例》</button>，若生前未立「預立化身處置決定書」，離世後化身將被封存，家人只能申請除籍，無法啟用（條例第十條）。</p>
+      <p>依<button class="linklike" data-law="1">《身後化身管理條例》</button>，若生前未立「預立化身處置決定書」，離世後化身將被封存，化身監護人只能申請除籍，無法啟用（條例第十條）。</p>
       <p style="margin-top:12px"><b>訂立決定書前，您應依法完成本諮商</b>，以確保您了解每個選擇的意義與影響，並讓您信任的人理解、尊重您的決定。</p>
       <h3>二、參與人員</h3>
       <p style="margin-bottom:0"><b>【應參與者】</b></p>
@@ -974,10 +1025,10 @@ const SCREENS = {
       ${nl(['諮商師：引導討論、確認您的意願，並說明化身存續的相關風險。', '化身維運代表：說明化身的技術限制與費用。'])}
       <h3>三、諮商前準備</h3>
       ${nl([
-        '請於諮商前填寫「預立化身處置委託申請」。',
-        '委託申請僅作為決定書草案，不具法律效力。您<b>不必全部填寫</b>，針對重視或有疑慮的項目填寫即可；未填寫的項目，將依預設辦理。',
+        '請於諮商前填寫「預立化身處置委託申請」。諮商團隊將依您的需求，協助調整委託申請內容，並擬定正式的「預立化身處置決定書」，經您確認後方始生效。',
+        '委託申請僅作為決定書草案，<b>不具法律效力</b>。',
+        '留存之使用及管理各條皆已列出預設條款，您<b>不必每條都填寫意見</b>；僅需針對重視或有疑慮的項目另外表達意見。',
         '若填寫內容之間有所衝突，將於諮商時協助您釐清。',
-        '諮商時，諮商團隊將依您的需求，協助調整委託申請內容，並擬定正式的「預立化身處置決定書」，經您確認後方始生效。',
       ])}
     </div>
     <div class="card" data-field="intro.read">${check('intro.read', '我已閱讀並了解上述諮商說明')}</div>
@@ -1002,14 +1053,15 @@ const SCREENS = {
     ${errorBox()}
     <div class="card" data-field="ch2.choice">
       <p>本人死亡後，本人之 AI 化身：</p>
-      ${radio('ch2.choice', 'keep', '<b>留存</b>：本人離世後，本人之化身轉為亡者化身，依決定書之內容運作。')}
+      ${radio('ch2.choice', 'keep', '<b>留存</b>：轉為亡者化身，依決定書之內容運作。')}
       <div class="indent" data-show="ch2.choice=keep" data-field="ch2.duration">
         存續期間：
         ${radio('ch2.duration', 'unlimited', '無期限')}
         <label class="choice"><input type="radio" name="ch2.duration" value="limited" data-bind="ch2.duration" ${state.ch2.duration === 'limited' ? 'checked' : ''}>以
           <input type="number" data-bind="ch2.years" value="${esc(state.ch2.years)}" min="1" style="width:5em"> 年為限，期滿除籍</label>
       </div>
-      ${radio('ch2.choice', 'deregister', '<b>除籍</b>：本人離世後，本人之化身無論由何人持有，統一除籍。')}
+      ${radio('ch2.choice', 'deregister', '<b>除籍</b>：永久刪除化身之資料與模型，並註銷化身登記。')}
+      <p class="muted small art-note dr-note">※ 除籍僅刪除化身本身。若您未明示反對，政府仍得依條例第十三條，許可他人以您的資料另行建立化身或訓練其他 AI。</p>
       <p class="muted small" data-show="ch2.choice=deregister">選擇除籍將略過「留存之使用及管理」，直接前往「確認送出」。</p>
     </div>
     ${navBtns()}`,
@@ -1023,8 +1075,8 @@ const SCREENS = {
       if (!a.def) return `
         <div class="card art-card" id="art${a.no}">
           <div class="art-body">
-          <span class="art-label">第${CN[a.no]}條</span>
-          <h3>${a.title} <span class="opt">（選填）</span></h3>
+          <div class="art-h"><div><span class="art-label">第${CN[a.no]}條</span>
+          <h3>${a.title} <span class="opt">（選填）</span></h3></div><button type="button" class="adv-btn" data-act="advice" data-no="${a.no}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5h16v10H10l-4 3.5v-3.5H4z"/></svg>想一想</button></div>
           ${a.note ? `<p class="muted small art-note free">${a.note}</p>` : ''}
           <textarea data-bind="${p}.text" placeholder="如有其他意願，請於此說明">${esc(state.ch3['a' + a.no].text)}</textarea>
         </div></div>`;
@@ -1032,8 +1084,8 @@ const SCREENS = {
       return `
         <div class="card art-card" id="art${a.no}" data-field="${p}.text">
           <div class="art-body">
-          <span class="art-label">第${CN[a.no]}條</span>
-          <h3>${a.title}</h3>
+          <div class="art-h"><div><span class="art-label">第${CN[a.no]}條</span>
+          <h3>${a.title}</h3></div><button type="button" class="adv-btn" data-act="advice" data-no="${a.no}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5h16v10H10l-4 3.5v-3.5H4z"/></svg>想一想</button></div>
           <div class="default-box"><b>預設條款</b>${def}</div>
           ${a.note ? `<p class="muted small art-note">${a.note}</p>` : ''}
           ${radio(p + '.mode', 'default', '同意預設條款')}
@@ -1254,6 +1306,18 @@ document.addEventListener('click', e => {
   if (t.dataset.go) return goTo(t.dataset.go);
   if (t.dataset.scroll) { document.getElementById(t.dataset.scroll).scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
   switch (t.dataset.act) {
+    case 'advice': return openAdvice(+t.dataset.no);
+    case 'advClose': return closeAdvice();
+    case 'lawAt': return openLawAt(t.dataset.art);
+    case 'advWrite': {   // 關閉建議，選「另有意見」並把游標放進輸入框
+      const no = +t.dataset.no; closeAdvice();
+      const ta = document.querySelector(`[data-bind="ch3.a${no}.text"]`);
+      const r = document.querySelector(`input[name="ch3.a${no}.mode"][value=custom]`);
+      if (r && !r.checked) { r.checked = true; r.dispatchEvent(new Event('change', { bubbles: true })); }
+      const ta2 = document.querySelector(`[data-bind="ch3.a${no}.text"]`) || ta;
+      if (ta2) { ta2.scrollIntoView({ block: 'center' }); ta2.focus(); }
+      return;
+    }
     case 'start': return goTo('intro');
     case 'home': {   // 點頁首標誌：回首頁（有填寫內容時先確認）
       if (state.screen === 'cover') return;
@@ -1301,6 +1365,102 @@ function lawTitle(t) {
   const m = t.match(/^(第.+?條)（(.+)）$/);
   return m ? `<span class="n">${m[1]}</span>　${m[2]}` : t;   // 全形空格分隔，PDF 也適用
 }
+/* 諮商團隊建議：每條「諮商建議」按鈕彈出的內容。只提方向與參考條文，不提供可照抄的句子。 */
+const ADVICE = {
+  1: { q: ['您是為了自己還是為了別人留下化身？為什麼？',
+           '您這一生有什麼一定要做的事情嗎？',
+           '100 年後對「公益」的定義跟現在會一樣嗎？'],
+       ref: ['第十三條'] },
+  2: { q: ['一年後，不斷學習的化身還能代表您嗎？五年後、十年後呢？',
+           '化身應該向誰、從哪裡學習與成長？',
+           '如果化身不會成長，它能代表您多久？',
+           '不會變的化身能滿足您的留存目的嗎？'],
+       ref: ['第五條', '第十九條'] },
+  3: { q: ['化身可以表達政治立場嗎？',
+           '化身可以主動向您所愛之人表達愛意嗎？',
+           '化身可以拒絕使用人的要求嗎？'],
+       ref: ['第八條', '第十七條', '第十九條'] },
+  4: { q: ['化身可以出於善意說謊嗎？',
+           '化身可以與使用人吵架嗎？',
+           '化身可以代替您與他人和解嗎？'],
+       ref: ['第十五條', '第十六條', '第十七條'] },
+  5: { q: ['依民法順序，哪些您在意的人無法與化身互動？例如伴侶、好友、兄弟姊妹。',
+           '有沒有人是您不希望他接觸化身的？',
+           '未成年的孩子或孫子女，可以和化身互動嗎？需要什麼條件？'],
+       ref: ['第九條', '第十二條', '第二十條'] },
+  6: { q: ['有沒有資料是您希望在離世後刪除的？例如私人訊息、日記、搜尋紀錄。',
+           '有沒有事情，是您不希望化身向家人提起的？',
+           '化身對不同的人，可以透露的程度應該一樣嗎？'],
+       ref: ['第三條', '第十六條'] },
+  7: { q: ['您願意被複製，或讓資料用來訓練其他 AI 嗎？',
+           '如果願意，限定哪些用途？例如教育、學術、文化。',
+           '家裡的化身除籍後，其他地方的複本是否也應該一起除籍？'],
+       ref: ['第十三條'] },
+  8: { q: ['您希望依自己的信仰被對待，還是尊重使用人的信仰？',
+           '有沒有您不願意化身參與的儀式？',
+           '家人祈求「保佑」或向化身問事時，您希望它怎麼回應？'],
+       ref: ['第十六條'] },
+  9: { q: ['如果只能留下一部分，您最想留下什麼？例如聲音、記憶、個性、專業知識。',
+           '維護費用應該由誰負擔？',
+           '家人無力負擔時，您寧可被縮減、封存，還是直接除籍？'],
+       ref: ['第二十四條', '第二十五條', '第二十六條'] },
+  10: { q: ['前面沒有提到，但您在意的事。',
+            '有沒有想留給特定人的話，或希望化身在某個時刻做的事？',
+            '您希望化身在什麼情況下被除籍？想要怎麼告別？',
+            '沒有寫到的事會由監護人決定。有沒有您不想交給監護人決定的事？'],
+        ref: ['第十一條', '第二十七條'] },
+};
+/* 跑馬燈：「本局近期受理」的其他立書人意見（虛構），用來打開想像；日常與荒謬混搭，只用短詞，避免被照抄成句子 */
+const PROMPTS = {   // a：荒謬｜d：日常。跑馬燈依「荒謬－日常－荒謬…」輪替
+  1: { a: ['統治世界', '競選里長', '監督子女不准離婚', '出庭作證', '談戀愛'],
+       d: ['繼續繳房貸', '替我參加同學會', '陪貓', '追完連載漫畫', '教 AI 講台語'] },
+  2: { a: ['永遠停在 35 歲', '忘掉前任', '只記得好事', '變得比我聰明', '不准學政治'],
+       d: ['每天讀報紙', '學會孫子的流行語', '自學鋼琴', '每年長大一歲', '跟家人一起變老'] },
+  3: { a: ['主動加好友', '半夜不准說話', '自己投資股票', '自己去旅行', '已讀不回'],
+       d: ['每天叫家人起床', '在家族群組傳長輩圖', '生日自動訂蛋糕', '幫狗預約美容', '寫回憶錄'] },
+  4: { a: ['不准替公司代言', '不准幫人寫功課', '可以說謊安慰孩子', '不准參選', '不准談戀愛'],
+       d: ['不准說髒話', '不准罵我先生', '唱歌可以走音', '不准提我的病', '只能說台語'] },
+  5: { a: ['我的貓', '還沒出生的曾孫', '網友', '所有人', '只有我自己'],
+       d: ['高中死黨', '我的學生', '鄰居阿姨', '前男友', '老闆不行'] },
+  6: { a: ['不准提我的體重', '刪掉所有自拍', '保留我的錯字', '聊天紀錄全公開', '忘掉我的病'],
+       d: ['刪掉搜尋紀錄', '日記只給女兒看', '密碼告訴配偶', '存款不准說', '只留好看的照片'] },
+  7: { a: ['不准做成遊戲角色', '不准訓練廣告 AI', '全世界都可以', '只能複製一份', '拿去研究失眠'],
+       d: ['只給國小', '不給補習班', '當教科書範例', '當博物館導覽員', '先問過我女兒'] },
+  8: { a: ['只聽搖滾樂', '聖誕節要唱歌', '不准被拜', '可以拜但不准求籤', '不吃素'],
+       d: ['不准誦經', '可以去遶境', '跟孫子一起禱告', '可以參加婚禮', '依我自己的信仰'] },
+  9: { a: ['先留笑聲', '先留罵人的方式', '知識不用留', '留下壞脾氣', '全部一起刪'],
+       d: ['先留聲音', '先留做菜的手藝', '先留台語', '留下口頭禪', '只留跟女兒的記憶'] },
+  10: { a: ['每年忌日放煙火', '跟另一個化身結婚', '別讓它知道我死了', '一百年後再開機', '清明節自動關機'],
+        d: ['在孫女婚禮上致詞', '化身也要退休', '給它放假', '讓它自己決定何時離開', '不要告別'] },
+};
+function marqueeHTML(no) {
+  const P = PROMPTS[no]; if (!P) return '';
+  const mix = arr => arr.slice().sort(() => Math.random() - .5);   // 同組內每次打開順序不同
+  const A = mix(P.a), D = mix(P.d), list = [];
+  for (let i = 0; i < Math.max(A.length, D.length); i++) { if (A[i]) list.push(A[i]); if (D[i]) list.push(D[i]); }   // 荒謬－日常輪替
+  const row = list.map(x => `<span class="mq-i">${esc(x)}</span>`).join('');
+  const dur = Math.max(24, list.join('').length * 1.1);   // 依字數調整速度
+  return `<div class="adv-mq"><span class="adv-mq-t">本局近期受理之意見（摘錄）</span>
+    <div class="mq" aria-label="${esc(list.join('、'))}"><div class="mq-track" style="animation-duration:${dur}s" aria-hidden="true">${row}${row}</div></div></div>`;
+}
+function adviceHTML(no) {
+  const a = ARTICLES.find(x => x.no === no), d = ADVICE[no];
+  return `<button class="icon-btn adv-x" data-act="advClose" title="關閉" aria-label="關閉"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <h2 id="advDlgT"><span class="n">第${CN[no]}條</span>${a.title}</h2>
+    <p class="adv-lead">做決定前，您可以想想看：</p>
+    <ol class="adv-q">${d.q.map(x => `<li>${x}</li>`).join('')}</ol>
+    ${marqueeHTML(no)}
+    <div class="adv-ref"><span>相關條文</span>${d.ref.map(r => `<button class="linklike" data-act="lawAt" data-art="${r}">條例${r}</button>`).join('')}</div>
+    <div class="dlg-btns"><button class="btn primary" data-act="advWrite" data-no="${no}">${a.def ? '寫下另有意見' : '開始填寫'}</button></div>`;
+}
+function openAdvice(no) { const d = document.getElementById('advDlg'); d.querySelector('.dlg').innerHTML = adviceHTML(no); d.hidden = false; d.querySelector('.adv-x').focus(); }
+function closeAdvice() { document.getElementById('advDlg').hidden = true; }
+function openLawAt(art) {
+  openLaw();
+  const h = [...document.querySelectorAll('#lawBody h4')].find(x => x.textContent.trim().startsWith(art));
+  if (h) { const body = document.getElementById('lawBody'); body.scrollTop = h.offsetTop - body.offsetTop - 12; h.classList.add('hl'); setTimeout(() => h.classList.remove('hl'), 1600); }
+}
+
 function lawHTML() {
   return LAW.map(c => `<h3>${c.ch}</h3>` + c.arts.map(a =>
     `<h4>${lawTitle(a.t)}</h4>${(a.p || []).map(x => `<p>${x}</p>`).join('')}${a.ol ? nl(a.ol, 'dun') : ''}${a.after ? `<p>${a.after}</p>` : ''}`).join('')).join('');
@@ -1314,6 +1474,8 @@ document.getElementById('scrim').onclick = closeLaw;
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeLaw(); document.getElementById('homeDlg').hidden = true; } });
 document.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('.c-home')) { e.preventDefault(); e.target.click(); } });
 document.getElementById('homeDlg').addEventListener('click', e => { if (e.target.id === 'homeDlg') e.target.hidden = true; });
+document.getElementById('advDlg').addEventListener('click', e => { if (e.target.id === 'advDlg') closeAdvice(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !document.getElementById('law').classList.contains('open')) closeAdvice(); }, true);   // 條例開著時，Esc 只關條例
 
 /* =========================================================================
    下載：填好的委託申請（單一 HTML）
@@ -1345,10 +1507,11 @@ function buildDocHTML() {
 
   const css = `${fonts}
 :root { --ink:#29282f; --ink2:#3f3e44; --mute:#6e6d73; --hair:#e0dfe2; --rule:#b9b8bd; --ctl:#8f8e94; --mod:#4f7894;
-  --sans:"Helvetica Neue",Helvetica,Arial,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;
-  --mono:"Plex Mono","SF Mono",Menlo,Consolas,"PingFang TC","Noto Sans TC",monospace; }
+  --sans:"Helvetica Neue",Helvetica,Arial,"PingFang TC","TCSans","Noto Sans TC","Microsoft JhengHei",sans-serif;
+  --mono:"Plex Mono","SF Mono",Menlo,Consolas,"PingFang TC","TCSans","Noto Sans TC",monospace; }
 @page { size: A4; margin: 18mm 20mm 20mm;
-  @bottom-left { content: "數位化身除籍局　｜　預立化身處置委託申請　${r.id}"; font: 7.5pt "Helvetica Neue", Helvetica, Arial, sans-serif; color: #8f8e94; letter-spacing: .1em; }
+  @top-left { content: ""; } @top-center { content: ""; } @top-right { content: ""; } @bottom-center { content: ""; }
+  @bottom-left { content: "數位化身除籍局　｜　預立化身處置委託申請　${r.id}"; font: 7.5pt "Helvetica Neue", Helvetica, Arial, "PingFang TC", "TCSans", sans-serif; color: #8f8e94; letter-spacing: .1em; }
   @bottom-right { content: counter(page) " / " counter(pages); font: 8pt "Plex Mono", monospace; color: #3f3e44; } }
 * { box-sizing: border-box; }
 html, body { margin: 0; }
@@ -1445,9 +1608,9 @@ section.law { break-before: page; margin-top: 0; font-size: 9.5pt; line-height: 
 
 <section class="keep">${head('04', '化身去留')}
   <p>本人死亡後，本人之 AI 化身：</p>
-  ${cb(keep, '<b>留存</b>：本人離世後，本人之化身轉為亡者化身，依決定書之內容運作。')}
+  ${cb(keep, '<b>留存</b>：轉為亡者化身，依決定書之內容運作。')}
   ${keep ? `<div class="indent dur">存續期間：${cb(!limited, '無期限')}${cb(limited, `以 ${limited ? esc(s.ch2.years) : '＿＿'} 年為限，期滿除籍`)}</div>` : ''}
-  ${cb(!keep, '<b>除籍</b>：本人離世後，本人之化身無論由何人持有，統一除籍。')}
+  ${cb(!keep, '<b>除籍</b>：永久刪除化身之資料與模型，並註銷化身登記。')}
 </section>
 
 <section>
@@ -1530,6 +1693,19 @@ function route() {
 window.addEventListener('hashchange', route);
 route();
 flushOutbox();   // 補送上次未確認送達的紀錄
+</script>
+<script>
+/* 有些 Android 手機的中文字型只有一種粗細、瀏覽器也不會自動加粗：偵測後在 <html> 加上 no-cjk-bold，用細描邊模擬粗體 */
+(function () {
+  try {
+    const c = document.createElement('canvas'); c.width = 120; c.height = 64; const x = c.getContext('2d');
+    const fam = getComputedStyle(document.body).fontFamily;
+    const ink = w => { x.clearRect(0, 0, 120, 64); x.font = w + ' 48px ' + fam;
+      x.fillText('身體', 0, 50); const d = x.getImageData(0, 0, 120, 64).data; let n = 0; for (let i = 3; i < d.length; i += 4) n += d[i]; return n; };
+    const a = ink('400'), b = ink('700');
+    if (a > 0 && b / a < 1.08) document.documentElement.classList.add('no-cjk-bold');
+  } catch (e) {}
+})();
 </script>
 </body>
 </html>

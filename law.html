@@ -43,7 +43,6 @@
   .progress { flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 16px; }
   .progress .label { font-family: var(--mono); font-size: 14px; color: var(--mute); white-space: nowrap; letter-spacing: .12em; }
   .progress .label b { color: var(--ink); font-weight: 400; }
-  .progress .label i { font-style: normal; }
   .progress .bar { width: 180px; height: 4px; background: var(--hair); position: relative; border-radius: 2px; overflow: hidden; }
   .progress .bar span { position: absolute; left: 0; top: 0; height: 4px; background: var(--ink); width: 0; transition: width .2s ease; }
   .id-chip { font-family: var(--mono); font-size: 13px; color: var(--mute); letter-spacing: .1em; white-space: nowrap; margin-left: 6px; }
@@ -123,12 +122,11 @@
   .term { color: var(--ink); }
 
   /* ---------- 頁尾 ---------- */
-  .doc-foot { display: flex; justify-content: space-between; align-items: center; gap: 16px 24px; flex-wrap: wrap; margin: 56px 0 0 .5em; padding-top: 18px;
+  .doc-foot { display: flex; justify-content: space-between; align-items: center; margin: 56px 0 0 .5em; padding-top: 18px;
               border-top: 1.5px solid var(--rule); font-family: var(--mono); font-size: 12px; color: var(--mute); letter-spacing: .14em; }
   .btn { border: 1px solid var(--ctl); background: transparent; color: var(--ink); height: 40px; padding: 0 22px; line-height: 38px; border-radius: 999px;
-         cursor: pointer; font-size: 15px; letter-spacing: .12em; font-family: var(--sans); white-space: nowrap; flex: none; transition: background .15s, color .15s; }
-  @media (hover: hover) { .btn:hover { background: var(--ink); border-color: var(--ink); color: #fff; } }
-  .btn:active { background: var(--ink); border-color: var(--ink); color: #fff; }
+         cursor: pointer; font-size: 15px; letter-spacing: .12em; font-family: var(--sans); transition: background .15s, color .15s; }
+  .btn:hover { background: var(--ink); border-color: var(--ink); color: #fff; }
   .tri-u { display: inline-block; width: 0; height: 0; margin-right: 12px; vertical-align: 2px;
            border-left: 4.5px solid transparent; border-right: 4.5px solid transparent; border-bottom: 7px solid currentColor; }
 
@@ -137,12 +135,9 @@
     nav.toc { display: none; }
     main { padding: 36px 22px 80px; }
     header.top { gap: 16px; padding: 0 16px; }
-    header.top h1, .progress .bar, .progress .label .lx { display: none; }
-    .progress .label { font-size: 13px; letter-spacing: .06em; }
-    .brand .org { margin-left: 12px; padding-left: 12px; }
+    header.top h1, .progress .bar { display: none; }
     .ph-no { font-size: 60px; } .ph { gap: 16px; } .ph h2 { font-size: 24px; }
     .stats { gap: 28px; } .stats b { font-size: 32px; }
-    .doc-foot { flex-direction: column; align-items: flex-start; margin-left: 0; padding-bottom: 72px; }
     .card { margin-left: 0; } .nlist { margin-left: 0; } .card p.para { grid-template-columns: 26px 1fr; }
   }
   @media print {
@@ -193,7 +188,7 @@ const LAW = [
   { ch: '死亡後之轉換', arts: [
     { t: '決定書之訂立', p: ['具完全行為能力之本人，得訂立決定書，預先決定其化身於死亡後之處置。', '決定書之格式、預立化身處置諮商及生效程序之辦法，由中央主管機關定之。'] },
     { t: '轉換原則', p: ['本人死亡後，其化身依決定書轉為亡者化身或予以除籍。'] },
-    { t: '轉換程序', p: ['戶政機關辦理死亡登記後，應即通知維運業者。', '維運業者知悉本人死亡時，應即停止其化身以本人名義行事，並依前條規定辦理轉換。'] },
+    { t: '轉換程序', p: ['戶政機關辦理死亡登記後，應即通知維運業者。', '維運業者知悉本人死亡時，應即停止其化身以在世之本人名義行事，並依前條規定辦理轉換。'] },
     { t: '化身監護人之產生', p: ['化身監護人由決定書指定；指定數人者，依其所定順位擔任。', '決定書未指定化身監護人，或受指定之人均不能或不願擔任者，由民法規定之繼承人協議推選一人擔任；繼承人僅有一人者，由其擔任；不能協議者，由主管機關選定之。'] },
     { t: '未立決定書者', p: ['本人未立決定書者，其化身應予封存。化身監護人得向維運業者申請除籍，但不得申請啟用。'] },
     { t: '變更及除籍之權限', p: ['亡者化身之變更或除籍，應依決定書為之；決定書未規定之事項，由化身監護人決定之，但不得違反決定書之意旨。', '使用人不得變更或除籍亡者化身。'] },
@@ -276,7 +271,7 @@ function onScroll() {
   const started = main.scrollTop > 40;
   const max = main.scrollHeight - main.clientHeight;
   document.getElementById('progBar').style.width = (max > 0 ? Math.round(main.scrollTop / max * 100) : 0) + '%';
-  document.getElementById('progLabel').innerHTML = started ? `<i class="lx">第 </i><b>${pad2(cur + 1)}</b> / ${pad2(TOTAL)}<i class="lx"> 條</i>` : `<i class="lx">共 </i><b>${pad2(TOTAL)}</b><i class="lx"> 條</i>`;
+  document.getElementById('progLabel').innerHTML = started ? `第 <b>${pad2(cur + 1)}</b> / ${pad2(TOTAL)} 條` : `共 <b>${pad2(TOTAL)}</b> 條`;
   const key = started ? cur : -1;
   if (key === lastArt) return;
   lastArt = key;
